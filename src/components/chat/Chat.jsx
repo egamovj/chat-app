@@ -5,7 +5,10 @@ import avatar from "../../../public/avatar.png";
 import phone from "../../../public/phone.png";
 import video from "../../../public/video.png";
 import info from "../../../public/info.png";
-import emoji from '../../../public/emoji.png'
+import emoji from "../../../public/emoji.png";
+import img from "../../../public/img.png";
+import camera from "../../../public/camera.png";
+import mic from "../../../public/mic.png";
 
 const Chat = () => {
   return (
@@ -26,11 +29,16 @@ const Chat = () => {
       </div>
       <div className="center"></div>
       <div className="bottom">
-        <div className="icons"></div>
+        <div className="icons">
+          <img src={img} alt="Img" />
+          <img src={camera} alt="Camera" />
+          <img src={mic} alt="Microphone" />
+        </div>
         <input type="text" placeholder="Type a message ..." />
         <div className="emoji">
           <img src={emoji} alt="Emoji" />
         </div>
+        <button className="sendButton">Send</button>
       </div>
     </div>
   );
