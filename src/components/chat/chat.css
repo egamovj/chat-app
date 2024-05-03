@@ -60,24 +60,37 @@
     align-items: center;
     justify-content: space-between;
     border-top: 1px solid #dddddd35;
+    gap: 20px;
 
     .icons {
       display: flex;
       gap: 20px;
+    }
 
-      img {
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-      }
+    img {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
     }
 
     input {
       flex: 1;
-      background-color: transparent;
+      background-color: rgba(17, 25, 40, 0.5);
       border: none;
       outline: none;
       color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .sendButton {
+      background-color: #5183fe;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
   }
 }
