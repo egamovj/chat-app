@@ -80,5 +80,18 @@
         }
       }
     }
+    button {
+      padding: 10px 20px;
+      background-color: rgba(230, 74, 105, 0.553);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.4s ease-in-out;
+
+      &:hover {
+        background-color: rgba(220, 20, 60, 0.796);
+      }
+    }
   }
 }
