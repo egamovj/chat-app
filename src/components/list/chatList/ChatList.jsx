@@ -11,12 +11,14 @@ import minus from "../../../../public/minus.png";
 import avatar from "../../../../public/avatar.png";
 
 import "./chatList.css";
+import { useChatStore } from "../../../lib/chatStore";
 
 const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
 
   const { currentUser } = useUserStore();
+  const { chatId, changeChat } = useChatStore();
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -43,6 +45,10 @@ const ChatList = () => {
     };
   }, [currentUser.id]);
 
+  const handleSelect = async(chat) => {
+    changeChat(chat.chatId, chat.user)
+  }
+
   return (
     <div className="chatList">
       <div className="search">
@@ -59,7 +65,7 @@ const ChatList = () => {
       </div>
 
       {chats.map((chat) => (
-        <div className="item" key={chat.chatId}>
+        <div className="item" key={chat.chatId} onClick={() => handleSelect(chat)}>
           <img src={chat.user.avatar || avatar} alt="avatar" />
           <div className="texts">
             <span>{chat.user.username}</span>
