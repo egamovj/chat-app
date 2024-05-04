@@ -121,9 +121,9 @@ const Chat = () => {
     <div className="chat">
       <div className="top">
         <div className="user">
-          <img src={avatar} alt="Avatar" />
+          <img src={user.avatar || avatar} alt="Avatar" />
           <div className="texts">
-            <span>Jane Doe</span>
+            <span>{user.username}</span>
             <p>Lorem ipsum dolor, sit amet.</p>
           </div>
         </div>

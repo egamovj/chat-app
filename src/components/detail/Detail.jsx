@@ -6,13 +6,21 @@ import arrowUp from "../../../public/arrowUp.png";
 import arrowDown from "../../../public/arrowDown.png";
 import download from "../../../public/download.png";
 import { auth } from "../../lib/firebase";
+import { useChatStore } from "../../lib/chatStore";
+import { useUserStore } from "../../lib/userStore";
 
 const Detail = () => {
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock } =
+    useChatStore();
+  const { currentUser } = useUserStore();
+
+  const handleBlock = () => {};
+
   return (
     <div className="detail">
       <div className="user">
-        <img src={avatar} />
-        <h2>Jane Doe</h2>
+        <img src={user?.avatar || avatar} />
+        <h2>{user?.username}</h2>
         <p>Lorem ipsum dolor, sit amet.</p>
       </div>
       <div className="info">
@@ -70,7 +78,7 @@ const Detail = () => {
             <img src={arrowUp} alt="arrowUp" />
           </div>
         </div>
-        <button>Block User</button>
+        <button onClick={handleBlock}>Block User</button>
         <button className="logout" onClick={() => auth.signOut()}>
           Logout
         </button>
