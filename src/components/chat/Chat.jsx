@@ -10,8 +10,11 @@ import emoji from "../../../public/emoji.png";
 import img from "../../../public/img.png";
 import camera from "../../../public/camera.png";
 import mic from "../../../public/mic.png";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 const Chat = () => {
+  const [chat, setChat] = useState(false);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
@@ -19,6 +22,19 @@ const Chat = () => {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    const unSub = onSnapshot(
+      doc(db, "chats", "3DPLoBno4PkbQUK47Q6B"),
+      (res) => {
+        setChat(res.data());
+      }
+    );
+
+    return () => {
+      unSub();
+    };
   }, []);
 
   const handleEmoji = (e) => {
