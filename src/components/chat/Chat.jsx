@@ -176,16 +176,20 @@ const Chat = () => {
         </div>
         <input
           type="text"
-          placeholder="Type a message ..."
+          placeholder={
+            isCurrentUserBlocked || isReceiverBlocked
+              ? "You cannot send a message"
+              : "Type a message ..."
+          }
           value={text}
           onChange={(e) => setText(e.target.value)}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
         <div className="emoji">
           <img
             src={emoji}
             alt="Emoji"
             onClick={() => setOpen((prev) => !prev)}
-            disabled={isCurrentUserBlocked || isReceiverBlocked}
           />
           <div className="picker">
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
