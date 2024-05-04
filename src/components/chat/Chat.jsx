@@ -10,16 +10,18 @@ import emoji from "../../../public/emoji.png";
 import img from "../../../public/img.png";
 import camera from "../../../public/camera.png";
 import mic from "../../../public/mic.png";
-import { doc, onSnapshot } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
+import { useUserStore } from "../../lib/userStore";
 
 const Chat = () => {
   const [chat, setChat] = useState(false);
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
 
-  const { chatId } = useChatStore();
+  const { currentUser } = useUserStore();
+  const { chatId, user } = useChatStore();
 
   const endRef = useRef(null);
 
@@ -42,6 +44,45 @@ const Chat = () => {
     setOpen(false);
   };
 
+  const handleSend = async () => {
+    if (text === "") return;
+
+    try {
+      await updateDoc(doc(db, "chats", chatId), {
+        messages: arrayUnion({
+          senderId: currentUser.id,
+          text,
+          createdAt: new Date(),
+        }),
+      });
+
+      const userIDs = [currentUser.id, user.id];
+
+      userIDs.forEach(async (id) => {
+        const userChatsRef = doc(db, "userchats", currentUser.id);
+        const userChatsSnapshot = await getDoc(userChatsRef);
+
+        if (userChatsSnapshot.exists()) {
+          const userChatsData = userChatsSnapshot.data();
+
+          const chatIndex = userChatsData.chats.findIndex(
+            (c) => c.chatId === chatId
+          );
+          userChatsData.chats[chatIndex].lastMessage = text;
+          userChatsData.chats[chatIndex].isSeen =
+            id === currentUser.id ? true : false;
+          userChatsData.chats[chatIndex].updatedAt = Date.now();
+
+          await updateDoc(userChatsRef, {
+            chats: userChatsData.chats,
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="chat">
       <div className="top">
@@ -60,17 +101,12 @@ const Chat = () => {
       </div>
 
       <div className="center">
-        {chat.messages.map((message) => (
+        {chat?.messages?.map((message) => (
           <div className="message own" key={message?.createAt}>
             <div className="texts">
-              {message.img <img src="https://images.pexels.com/photos/1172207/pexels-photo-1172207.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />}
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-              </p>
-              <span>1 min ago</span>
+              {message.img && <img src={message.img} />}
+              <p>{message.text}</p>
+              {/* <span>{message}</span> */}
             </div>
           </div>
         ))}
@@ -100,7 +136,9 @@ const Chat = () => {
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className="sendButton">Send</button>
+        <button className="sendButton" onClick={handleSend}>
+          Send
+        </button>
       </div>
     </div>
   );
