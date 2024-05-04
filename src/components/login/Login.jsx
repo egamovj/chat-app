@@ -26,7 +26,9 @@ const Login = () => {
           <button>Sign In</button>
         </form>
       </div>
+
       <div className="separator"></div>
+      
       <div className="item">
         <h2>Create an Account</h2>
         <form>
@@ -43,7 +45,7 @@ const Login = () => {
           <input type="text" placeholder="Username" name="username" />
           <input type="text" placeholder="Email address" name="email" />
           <input type="password" placeholder="Password" name="password" />
-          <button>Sign In</button>
+          <button>Sign Up</button>
         </form>
       </div>
     </div>
