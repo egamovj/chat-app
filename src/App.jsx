@@ -7,7 +7,7 @@ import Detail from "./components/detail/Detail";
 import Notification from "./components/notification/Notification";
 
 function App() {
-  const user = true;
+  const user = false;
 
   return (
     <div className="container">
