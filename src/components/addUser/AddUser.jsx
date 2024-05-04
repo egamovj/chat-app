@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import "./addUser.css";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
 const AddUser = () => {
@@ -24,6 +24,21 @@ const AddUser = () => {
     }
   };
 
+  const handleAdd = async () => {
+    const chatRef = collection(db, "chats");
+    const userChatsRef = collection(db, "userchats");
+
+    try {
+      await setDoc(chatRef, {
+        createdAt: serverTimestamp(),
+        // messages: 
+      })
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="addUser">
       <form onSubmit={handleSearch}>
@@ -39,7 +54,7 @@ const AddUser = () => {
             />
             <span>{user.username}</span>
           </div>
-          <button>Add User</button>
+          <button onClick={handleAdd}>Add User</button>
         </div>
       )}
     </div>
