@@ -32,7 +32,8 @@ const Chat = () => {
   });
 
   const { currentUser } = useUserStore();
-  const { chatId, user } = useChatStore();
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
+    useChatStore();
 
   const endRef = useRef(null);
 
@@ -121,9 +122,9 @@ const Chat = () => {
     <div className="chat">
       <div className="top">
         <div className="user">
-          <img src={user.avatar || avatar} alt="Avatar" />
+          <img src={user?.avatar || avatar} alt="Avatar" />
           <div className="texts">
-            <span>{user.username}</span>
+            <span>{user?.username}</span>
             <p>Lorem ipsum dolor, sit amet.</p>
           </div>
         </div>
@@ -136,7 +137,12 @@ const Chat = () => {
 
       <div className="center">
         {chat?.messages?.map((message) => (
-          <div className={message.senderId === currentUser?.id ? "message own" : "message"} key={message?.createAt}>
+          <div
+            className={
+              message.senderId === currentUser?.id ? "message own" : "message"
+            }
+            key={message?.createAt}
+          >
             <div className="texts">
               {message.img && <img src={message.img} />}
               <p>{message.text}</p>
@@ -144,18 +150,20 @@ const Chat = () => {
             </div>
           </div>
         ))}
-        {img.url && <div className="message own">
-          <div className="texts">
-            <img src={img.url} /> 
+        {img.url && (
+          <div className="message own">
+            <div className="texts">
+              <img src={img.url} />
+            </div>
           </div>
-        </div>}
+        )}
         <div ref={endRef}></div>
       </div>
 
       <div className="bottom">
         <div className="icons">
           <label htmlFor="file">
-            <img src='../../../public/img.png' alt="Img" />
+            <img src="../../../public/img.png" alt="Img" />
           </label>
           <input
             type="file"
@@ -177,12 +185,17 @@ const Chat = () => {
             src={emoji}
             alt="Emoji"
             onClick={() => setOpen((prev) => !prev)}
+            disabled={isCurrentUserBlocked || isReceiverBlocked}
           />
           <div className="picker">
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className="sendButton" onClick={handleSend}>
+        <button
+          className="sendButton"
+          onClick={handleSend}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
+        >
           Send
         </button>
       </div>
