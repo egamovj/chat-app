@@ -1,6 +1,7 @@
 # React + Vite
 
-Realtime chat app with React.js and Firebase. Modern design with CSS
+Realtime chat app with React.js and Firebase. Modern design with CSS.
+Clone the github repository to try this project
 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
